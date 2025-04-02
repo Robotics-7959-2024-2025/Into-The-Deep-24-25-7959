@@ -86,6 +86,58 @@ class DuoKT : LinearOpMode() {
 
             MotorsKT.motors["extendo"]?.power = -gamepad1.right_stick_y.toDouble()
 
+
+            if(gamepad1.left_bumper){
+                //0.7882
+                MotorsKT.servos["wristR"]?.position = (1-((135)/(255*1.6)));
+                //0.2118
+                MotorsKT.servos["wristL"]?.position = (1-((135)/(255*1.6)));
+            }
+
+            if(gamepad1.a)
+            {
+                //180/300 is 0.6
+//                wristL.setPosition(((135.0)/(255.0*(1.6))));
+//                wristR.setPosition(1.0-((135.0)/(255.0*(1.6))));
+                MotorsKT.servos["elbowR"]?.position = (0.98);
+                MotorsKT.servos["elbowL"]?.position = (0.02);
+                MotorsKT.servos["claw"]?.position = (0.0);
+                    intakeToggle = false;
+            }
+
+
+            //moves to pre-grabbing position
+            if(gamepad2.dpad_left){
+                MotorsKT.servos["outWrist"]?.position = (0.6);
+
+            }
+
+            //moves to grabbing position
+            if(gamepad2.dpad_right){
+                MotorsKT.servos["outWrist"]?.position = (0.0);
+            }
+            if(gamepad2.dpad_down){
+                MotorsKT.servos["outL"]?.position = ((0.5));
+                MotorsKT.servos["outR"]?.position =(0.5);
+            }
+
+
+            if(gamepad2.dpad_up){
+                MotorsKT.servos["outL"]?.position = ((1.0));
+                MotorsKT.servos["outR"]?.position = (0.0);
+            }
+
+            if(gamepad1.right_bumper) {
+                //0.1098
+                R = 70 / (255 * 1.6);
+                //0.8980
+                MotorsKT.servos["wristR"]?.position = (1 - ((135) / (255 * 1.6)) + R);
+                //0.3216
+                MotorsKT.servos["wristL"]?.position = (((135) / (255 * 1.6)) + R);
+            }
+
+
+
             if (gamepad2.right_bumper) {
                 intakeToggle = false
                 MotorsKT.servos["claw"]?.position = 0.0
@@ -94,6 +146,25 @@ class DuoKT : LinearOpMode() {
                 MotorsKT.servos["outL"]?.position = 0.6
                 MotorsKT.servos["outR"]?.position = 0.4
                 MotorsKT.servos["outWrist"]?.position = 0.0
+            }
+
+            if (gamepad2.left_bumper) {
+                //put this jawn down
+                MotorsKT.servos["outL"]?.position = 0.0
+                MotorsKT.servos["outR"]?.position = 1.0
+                //opens the claw
+                outToggle = false;
+                MotorsKT.servos["outClaw"]?.position = 0.0
+
+
+                //wrist.setPosition(0.9);
+                MotorsKT.servos["elbowR"]?.position = 0.8
+                MotorsKT.servos["elbowL"]?.position = 0.2
+                MotorsKT.servos["claw"]?.position = 0.0
+                intakeToggle = false;
+
+                telemetry.addData("current pos", MotorsKT.servos["outClaw"]?.position);
+                telemetry.update();
             }
 
             if (gamepad2.y) {
@@ -106,6 +177,11 @@ class DuoKT : LinearOpMode() {
                 MotorsKT.servos["wristR"]?.position = 1 - (135 / (255 * 1.6))
                 outToggle = false
                 MotorsKT.servos["outClaw"]?.position = 0.0
+            }
+
+            if(gamepad1.b){
+                MotorsKT.servos["elbowR"]?.position = 0.8
+                MotorsKT.servos["elbowL"]?.position = 0.2
             }
 
             if (gamepad2.b) {
@@ -159,6 +235,16 @@ class DuoKT : LinearOpMode() {
             if (gamepad1.b) {
                 MotorsKT.servos["elbowR"]?.position = 0.8
                 MotorsKT.servos["elbowL"]?.position = 0.2
+            }
+
+            if (currentGamepad1.x && !previousGamepad1.x) {
+                intakeToggle = !intakeToggle;
+            }
+            if (outNow.x && !outPrev.x) {
+                outToggle = !outToggle;
+            }
+            if (outNow.a && !outPrev.a) {
+                eviltog = !eviltog;
             }
 
             if (gamepad1.x) {
